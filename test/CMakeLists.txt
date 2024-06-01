@@ -46,3 +46,4 @@ macro(ADDTEST name arg)
 endmacro(ADDTEST)
 
 ADDTEST(u8func "")
+ADDTEST(codepoint "")
