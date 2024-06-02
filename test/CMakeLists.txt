@@ -46,4 +46,4 @@ macro(ADDTEST name arg)
 endmacro(ADDTEST)
 
 ADDTEST(u8func "")
-ADDTEST(codepoint "")
+ADDTEST(codepoint ${CMAKE_CURRENT_SOURCE_DIR}/UnicodeList.txt)
