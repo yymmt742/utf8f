@@ -1,5 +1,87 @@
 import sys
 
+data_source = "https://www.unicode.org/Public/15.1.0/ucd/EastAsianWidth.txt"
+
+
+def width(sp1, sp2, is_CJK):
+    if sp2 == "Me" or sp2 == "Mn" or sp2 == "Cf" or sp2 == "Cc":
+        return 0
+    elif sp2 == "Cs":
+        return 2
+    elif sp1 == "F" or sp1 == "W":
+        return 2
+    elif sp1 == "A":
+        return 2 if is_CJK else 1
+    elif sp1 == "N" and (sp2 == "Zl" or sp2 == "Zp"):
+        return 1
+    else:
+        return 0
+
+
+def to_f90_arrayconstructer(vardef, var, table, nb: int = 5):
+    sep = ", &\n  " + " " * len(vardef)
+    return (
+        vardef
+        + var
+        + "[ &\n"
+        + " " * len(vardef)
+        + "  "
+        + sep.join(
+            [
+                ", ".join([t for t in table[i : i + nb]])
+                for i in range(1, len(table), nb)
+            ]
+        )
+        + "]\n"
+    )
+
+
+def write_chr_table(path, table):
+    with open(path, "w") as f:
+        n = len(table) - 1
+        l = max([len(t[1]) for t in table[1:]])
+        f.write("! Generated from " + data_source + "\n")
+        f.write(f"  integer, parameter            :: N_TABLE = {n}\n")
+        f.write(f"  integer, parameter            :: L_TABLE = {l}\n")
+        f.write(
+            to_f90_arrayconstructer(
+                "  integer, parameter            :: ",
+                "index_table(N_TABLE) = ",
+                [str(ft[0]).rjust(7) for ft in table],
+            ),
+        )
+        f.write(
+            to_f90_arrayconstructer(
+                "  character(L_TABLE), parameter :: ",
+                "table(N_TABLE) = ",
+                ['"' + str(ft[1]).ljust(l) + '"' for ft in table],
+                10,
+            ),
+        )
+
+
+def write_int_table(path, table):
+    with open(path, "w") as f:
+        n = len(table) - 1
+        f.write("! Generated from " + data_source + "\n")
+        f.write(f"  integer, parameter            :: N_TABLE = {n}\n")
+        f.write(
+            to_f90_arrayconstructer(
+                "  integer, parameter            :: ",
+                "index_table(N_TABLE) = ",
+                [str(ft[0]).rjust(7) for ft in table],
+            ),
+        )
+        f.write(
+            to_f90_arrayconstructer(
+                "  integer, parameter            :: ",
+                "index_table(N_TABLE) = ",
+                [str(ft[1]).rjust(2) for ft in table],
+                10,
+            ),
+        )
+
+
 with open(sys.argv[1]) as f:
     fold_table = [[-1, -1, "", ""]]
     for l in f:
@@ -33,52 +115,29 @@ with open(sys.argv[1]) as f:
                     [codepoints[0], codepoints[1], spec[0], spec[1]],
                 ]
 
-
-def width(sp1, sp2):
-    if sp2 == "Me" or sp2 == "Mn" or sp2 == "Cf" or sp2 == "Cc":
-        return 0
-    elif sp2 == "Cs":
-        return 2
-    elif sp1 == "F" or sp1 == "W":
-        return 2
-    elif sp1 == "A":
-        return 2
-    elif sp1 == "N" and (sp2 == "Zl" or sp2 == "Zp"):
-        return 1
-    else:
-        return -1
-
-
-"""
-for ft in fold_table:
-    w = width(ft[2], ft[3])
-    print(f"{ft[0]:04x} {ft[1]:04x} {ft[2:4]} {w}")
-"""
-
-frac_table = [[-1, ""]]
-for ft in fold_table:
-    if frac_table[-1][1] != ft[2]:
-        frac_table += [[ft[0], ft[2]]]
+category_table = [[-1, ""]]
+for ft in fold_table[1:]:
+    if category_table[-1][1] != ft[2]:
+        category_table += [[ft[0], ft[2]]]
 
 east_table = [[-1, ""]]
-for ft in fold_table:
-    if east_table[-1][1] != ft[2]:
-        east_table += [[ft[0], ft[2]]]
+for ft in fold_table[1:]:
+    if east_table[-1][1] != ft[3]:
+        east_table += [[ft[0], ft[3]]]
 
-width_table = [[-1, -1, -1]]
-for ft in fold_table:
-    w = width(ft[2], ft[3])
+width_table = [[-1, -1]]
+for ft in fold_table[1:]:
+    w = width(ft[2], ft[3], False)
     if width_table[-1][1] != w:
         width_table += [[ft[0], w]]
 
-print(frac_table)
-print(east_table)
-print(width_table)
-"""
-for wt in frac_table:
-    print(f"{wt[0]:04x} {wt[1]}")
-for wt in east_table:
-    print(f"{wt[0]:04x} {wt[1]}")
-for wt in width_table:
-    print(f"{wt[0]:04x} {wt[1]}")
-"""
+width_CJK_table = [[-1, -1]]
+for ft in fold_table[1:]:
+    w = width(ft[2], ft[3], True)
+    if width_CJK_table[-1][1] != w:
+        width_CJK_table += [[ft[0], w]]
+
+write_chr_table("category_table.h", category_table)
+write_chr_table("easta_category_table.h", east_table)
+write_int_table("width_table.h", width_table)
+write_int_table("width_CJK_table.h", width_CJK_table)

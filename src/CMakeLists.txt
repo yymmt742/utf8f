@@ -3,10 +3,10 @@ if(NOT EXISTS "${LIB_MOD_DIR}")
   make_directory("${LIB_MOD_DIR}")
 endif()
 
-file(DOWNLOAD https://www.unicode.org/Public/15.1.0/ucd/EastAsianWidth.txt
-     ${CMAKE_CURRENT_BINARY_DIR}/EastAsianWidth.txt)
-file(DOWNLOAD https://www.unicode.org/Public/UNIDATA/UnicodeData.txt
-     ${CMAKE_CURRENT_BINARY_DIR}/UnicodeData.txt)
+#file(DOWNLOAD https://www.unicode.org/Public/15.1.0/ucd/EastAsianWidth.txt
+#     ${CMAKE_CURRENT_BINARY_DIR}/EastAsianWidth.txt)
+#file(DOWNLOAD https://www.unicode.org/Public/UNIDATA/UnicodeData.txt
+#     ${CMAKE_CURRENT_BINARY_DIR}/UnicodeData.txt)
 
 add_library(
   ${PROJECT_NAME} STATIC
