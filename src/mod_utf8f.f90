@@ -8,22 +8,9 @@ module mod_utf8f
   public :: utf8f_width
   public :: utf8f_codepoint
   public :: is_ascii
-!<&
-  integer(INT8), parameter :: B11111110 =   -2_INT8
-  integer(INT8), parameter :: B11111100 =   -4_INT8
-  integer(INT8), parameter :: B11111000 =   -8_INT8
-  integer(INT8), parameter :: B11110000 =  -16_INT8
-  integer(INT8), parameter :: B11100000 =  -32_INT8
-  integer(INT8), parameter :: B11000000 =  -64_INT8
-  integer(INT8), parameter :: B10000000 = -127_INT8 - 1_INT8
-  integer(INT8), parameter :: B00000000 =    0_INT8
-  integer(INT8), parameter :: B00111111 =   63_INT8
-  integer(INT8), parameter :: B00011111 =   31_INT8
-  integer(INT8), parameter :: B00001111 =   15_INT8
-  integer(INT8), parameter :: B00000111 =    7_INT8
-  integer(INT8), parameter :: B00000011 =    3_INT8
-  integer(INT8), parameter :: B00000001 =    1_INT8
-!&>
+!
+  include "mask.h"
+!
   interface
     pure elemental module function utf8f_codepoint(s) result(res)
     character(*), intent(in) :: s
