@@ -11,6 +11,8 @@ endif()
 add_library(
   ${PROJECT_NAME} STATIC
   ${CMAKE_CURRENT_SOURCE_DIR}/mod_utf8f.f90
+  ${CMAKE_CURRENT_SOURCE_DIR}/mod_utf8f_len.f90
+  ${CMAKE_CURRENT_SOURCE_DIR}/mod_utf8f_nbyte.f90
   ${CMAKE_CURRENT_SOURCE_DIR}/mod_utf8f_codepoint.f90
 # ${CMAKE_CURRENT_SOURCE_DIR}/mod_utf8f_width.f90
   )
