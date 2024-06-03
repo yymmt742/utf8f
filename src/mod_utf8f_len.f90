@@ -1,9 +1,3 @@
-!| String decoration with ascii control characters, collection of input/output controls.
-submodule(mod_utf8f) mod_utf8f_len
-  use ISO_FORTRAN_ENV, only: INT8
-  implicit none
-  include "mask.h"
-contains
 !| Returns length of utf8 string. <br>
   pure elemental function utf8f_len(s) result(res)
     character(*), intent(in) :: s
@@ -27,6 +21,4 @@ contains
       if (IAND(ICHAR(s(n - 0:n - 0), INT8), B11000000) /= B10000000) res = res + 1
     end if
   end function utf8f_len
-!
-end submodule mod_utf8f_len
 

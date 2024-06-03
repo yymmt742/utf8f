@@ -47,3 +47,4 @@ endmacro(ADDTEST)
 
 ADDTEST(u8func "")
 ADDTEST(codepoint ${CMAKE_CURRENT_SOURCE_DIR}/UnicodeList.txt)
+ADDTEST(width ${CMAKE_CURRENT_SOURCE_DIR}/CJK.txt)

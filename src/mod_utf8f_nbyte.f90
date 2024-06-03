@@ -1,8 +1,3 @@
-!| String decoration with ascii control characters, collection of input/output controls.
-submodule(mod_utf8f) mod_utf8f_nbyte
-  implicit none
-  include "mask.h"
-contains
 !| Returns number of byte of utf8 string. <br>
   pure elemental function utf8f_nbyte(s) result(res)
     character, intent(in)    :: s
@@ -20,6 +15,4 @@ contains
     end if
 !&>
   end function utf8f_nbyte
-!
-end submodule mod_utf8f_nbyte
 
