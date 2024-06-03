@@ -5,6 +5,7 @@ module mod_utf8f
   private
   public :: utf8f_len
   public :: utf8f_nbyte
+  public :: utf8f_width
   public :: utf8f_codepoint
   public :: is_ascii
 !<&
@@ -23,6 +24,20 @@ module mod_utf8f
   integer(INT8), parameter :: B00000011 =    3_INT8
   integer(INT8), parameter :: B00000001 =    1_INT8
 !&>
+  interface
+    pure elemental module function utf8f_codepoint(s) result(res)
+    character(*), intent(in) :: s
+    integer                  :: res
+    end function utf8f_codepoint
+!
+    pure module function utf8f_width(s, is_CJK) result(res)
+    character(*), intent(in) :: s
+    logical, intent(in)      :: is_CJK
+    integer                  :: res
+    end function utf8f_width
+!
+  end interface
+!
 contains
 !| Returns length of utf8 string. <br>
   pure function utf8f_len(s) result(res)
@@ -65,46 +80,6 @@ contains
     end if
 !&>
   end function utf8f_nbyte
-!
-!| Returns number of byte of utf8 string. <br>
-  pure elemental function utf8f_codepoint(s) result(res)
-    character(*), intent(in) :: s
-    integer(INT8)            :: b
-    integer                  :: res
-!<&
-    b = IACHAR(s(1:1), INT8)
-    if (    IAND(b, B10000000) == B00000000) then
-      res = b
-    elseif (IAND(b, B11100000) == B11000000) then
-      res = IAND(b, B00011111)
-      res = IAND(IACHAR(s(2:2), INT8), B00111111) + ISHFT(res, 6)
-    elseif (IAND(b, B11110000) == B11100000) then
-      res = IAND(b, B00001111)
-      res = IAND(IACHAR(s(2:2), INT8), B00111111) + ISHFT(res, 6)
-      res = IAND(IACHAR(s(3:3), INT8), B00111111) + ISHFT(res, 6)
-    elseif (IAND(b, B11111000) == B11110000) then
-      res = IAND(b, B00000111)
-      res = IAND(IACHAR(s(2:2), INT8), B00111111) + ISHFT(res, 6)
-      res = IAND(IACHAR(s(3:3), INT8), B00111111) + ISHFT(res, 6)
-      res = IAND(IACHAR(s(4:4), INT8), B00111111) + ISHFT(res, 6)
-    elseif (IAND(b, B11111100) == B11111000) then
-      res = IAND(b, B00000011)
-      res = IAND(IACHAR(s(2:2), INT8), B00111111) + ISHFT(res, 6)
-      res = IAND(IACHAR(s(3:3), INT8), B00111111) + ISHFT(res, 6)
-      res = IAND(IACHAR(s(4:4), INT8), B00111111) + ISHFT(res, 6)
-      res = IAND(IACHAR(s(5:5), INT8), B00111111) + ISHFT(res, 6)
-    elseif (IAND(b, B11111110) == B11111100) then
-      res = IAND(b, B00000001)
-      res = IAND(IACHAR(s(2:2), INT8), B00111111) + ISHFT(res, 6)
-      res = IAND(IACHAR(s(3:3), INT8), B00111111) + ISHFT(res, 6)
-      res = IAND(IACHAR(s(4:4), INT8), B00111111) + ISHFT(res, 6)
-      res = IAND(IACHAR(s(5:5), INT8), B00111111) + ISHFT(res, 6)
-      res = IAND(IACHAR(s(6:6), INT8), B00111111) + ISHFT(res, 6)
-    else
-      res = 0
-    end if
-!&>
-  end function utf8f_codepoint
 !
 !| Returns true if s is ascii character.
   pure function is_ascii(s) result(res)

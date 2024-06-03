@@ -11,8 +11,9 @@ endif()
 add_library(
   ${PROJECT_NAME} STATIC
   ${CMAKE_CURRENT_SOURCE_DIR}/mod_utf8f.f90
+  ${CMAKE_CURRENT_SOURCE_DIR}/mod_utf8f_codepoint.f90
+# ${CMAKE_CURRENT_SOURCE_DIR}/mod_utf8f_width.f90
   )
-
 target_compile_options(
   ${PROJECT_NAME}
   PRIVATE
@@ -51,10 +52,15 @@ if(UNIX)
     $<$<CONFIG:Debug>:$<$<COMPILE_LANG_AND_ID:Fortran,Intel>:-warn all>>
     )
 endif()
-
-set_target_properties(${PROJECT_NAME}
+target_include_directories(
+  ${PROJECT_NAME} PRIVATE
+  ${CMAKE_CURRENT_SOURCE_DIR}/../include
+  )
+set_target_properties(
+  ${PROJECT_NAME}
   PROPERTIES Fortran_MODULE_DIRECTORY
-  ${LIB_MOD_DIR})
+  ${LIB_MOD_DIR}
+  )
 
 install(
   TARGETS ${PROJECT_NAME}
