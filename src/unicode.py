@@ -1,15 +1,5 @@
 import sys
 
-"""
-table = ["" for i in range(1114110)]
-
-with open(sys.argv[1]) as f:
-    for l in f:
-        s = l.split(";")[0:3:2]
-        codepoint = int("0x" + s[0], 0)
-        table[codepoint] = s[1]
-"""
-
 with open(sys.argv[1]) as f:
     fold_table = [[-1, -1, "", ""]]
     for l in f:
@@ -26,34 +16,22 @@ with open(sys.argv[1]) as f:
         if len(codepoints) == 1:
             codepoints += codepoints
         spec = s[1].split()[0:3:2]
-        """
-        if spec[] == "N":
-            continue
-        if len(codepoints) == 1:
-            table[codepoints[0]] = spec
-        else:
-            for codepoint in range(codepoints[0], codepoints[1] + 1):
-                table[codepoint] = spec
-        """
         if fold_table[-1][2] == spec[0] and fold_table[-1][3] == spec[1]:
             if fold_table[-1][1] + 1 == codepoints[0]:
                 fold_table[-1][1] = codepoints[1]
             else:
-                fold_table += [[codepoints[0], codepoints[1], spec[0], spec[1]]]
+                fold_table += [
+                    [fold_table[-1][1] + 1, codepoints[0] - 1, "", ""],
+                    [codepoints[0], codepoints[1], spec[0], spec[1]],
+                ]
         else:
-            fold_table += [[codepoints[0], codepoints[1], spec[0], spec[1]]]
-"""
-spec = ""
-ispc = -1
-fold_table = []
-for i, t in enumerate(table):
-    if t != spec:
-        if ispc >= 0:
-            fold_table += [[f"{ispc:04x}", f"{i - 1:04x}", spec]]
-        spec = t
-        ispc = i
-        continue
-"""
+            if fold_table[-1][1] + 1 == codepoints[0]:
+                fold_table += [[codepoints[0], codepoints[1], spec[0], spec[1]]]
+            else:
+                fold_table += [
+                    [fold_table[-1][1] + 1, codepoints[0] - 1, "", ""],
+                    [codepoints[0], codepoints[1], spec[0], spec[1]],
+                ]
 
 
 def width(sp1, sp2):
@@ -71,6 +49,36 @@ def width(sp1, sp2):
         return -1
 
 
+"""
 for ft in fold_table:
     w = width(ft[2], ft[3])
     print(f"{ft[0]:04x} {ft[1]:04x} {ft[2:4]} {w}")
+"""
+
+frac_table = [[-1, ""]]
+for ft in fold_table:
+    if frac_table[-1][1] != ft[2]:
+        frac_table += [[ft[0], ft[2]]]
+
+east_table = [[-1, ""]]
+for ft in fold_table:
+    if east_table[-1][1] != ft[2]:
+        east_table += [[ft[0], ft[2]]]
+
+width_table = [[-1, -1, -1]]
+for ft in fold_table:
+    w = width(ft[2], ft[3])
+    if width_table[-1][1] != w:
+        width_table += [[ft[0], w]]
+
+print(frac_table)
+print(east_table)
+print(width_table)
+"""
+for wt in frac_table:
+    print(f"{wt[0]:04x} {wt[1]}")
+for wt in east_table:
+    print(f"{wt[0]:04x} {wt[1]}")
+for wt in width_table:
+    print(f"{wt[0]:04x} {wt[1]}")
+"""
