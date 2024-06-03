@@ -7,6 +7,7 @@ module mod_utf8f
   public :: utf8f_nbyte
   public :: utf8f_codepoint
   public :: utf8f_category
+  public :: utf8f_easta_property
   public :: utf8f_width
   public :: is_ascii
 !
@@ -26,16 +27,21 @@ module mod_utf8f
       integer                  :: res
     end function utf8f_codepoint
 !
-    pure module function utf8f_width(s, is_CJK) result(res)
+    pure elemental module function utf8f_easta_property(s) result(res)
+      character(*), intent(in) :: s
+      character(2)             :: res
+    end function utf8f_easta_property
+!
+    pure elemental module function utf8f_category(s) result(res)
+      character(*), intent(in) :: s
+      character(2)             :: res
+    end function utf8f_category
+!
+    pure elemental module function utf8f_width(s, is_CJK) result(res)
       character(*), intent(in)      :: s
       logical, intent(in), optional :: is_CJK
       integer                       :: res
     end function utf8f_width
-!
-    pure module function utf8f_category(s) result(res)
-      character(*), intent(in) :: s
-      character(2)             :: res
-    end function utf8f_category
 !
   end interface
 !

@@ -2,7 +2,7 @@
 submodule(mod_utf8f) mod_utf8f_category
   implicit none
 contains
-  pure module function utf8f_category(s) result(res)
+  pure elemental module function utf8f_category(s) result(res)
     character(*), intent(in) :: s
     character(2)             :: res
     integer                  :: c
