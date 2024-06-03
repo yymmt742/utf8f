@@ -5,8 +5,9 @@ module mod_utf8f
   private
   public :: utf8f_len
   public :: utf8f_nbyte
-  public :: utf8f_width
   public :: utf8f_codepoint
+  public :: utf8f_category
+  public :: utf8f_width
   public :: is_ascii
 !
   interface
@@ -26,10 +27,15 @@ module mod_utf8f
     end function utf8f_codepoint
 !
     pure module function utf8f_width(s, is_CJK) result(res)
-      character(*), intent(in) :: s
-      logical, intent(in)      :: is_CJK
-      integer                  :: res
+      character(*), intent(in)      :: s
+      logical, intent(in), optional :: is_CJK
+      integer                       :: res
     end function utf8f_width
+!
+    pure module function utf8f_category(s) result(res)
+      character(*), intent(in) :: s
+      character(2)             :: res
+    end function utf8f_category
 !
   end interface
 !
