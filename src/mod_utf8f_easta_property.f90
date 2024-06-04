@@ -13,6 +13,7 @@
     character(2), intent(inout) :: res
     include "easta_property_table.h"
     integer                     :: ind
+    if (codepoint > INDEX_TABLE(N_TABLE)) return
     call binary_search(codepoint, 1, N_TABLE, N_TABLE, &
    &                   INDEX_TABLE, ind)
     res = table(ind)
