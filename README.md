@@ -72,15 +72,15 @@ utf8f provides a set of functions useful for handling utf-8 strings in fortran.
       end program main
    ```
 
-   The following functions are availableThe following functions are available.
+   The following functions are available.
 
-  | Function                | Retrun value | Arguments                                   | Description                                                                                                  |
-  | ----------------------- | ------------ | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
-  | utf8f_len(s)            | integer      | s character(\*)                             | Returns the number of characters in a string. (Unlike the built-in LEN, this is not byte-length.)            |
-  | utf8f_codepoint(s)      | integer      | s character(\*)                             | Returns the Unicode code point of the first character in string s.                                           |
-  | utf8f_width(s, is_CJK)  | integer      | s character(\*), is_CJK (logical, optional) | Returns the character width displayed in the console. (Based on East Asian Width in Unicode Standard Annex.) |
-  | utf8f_category(s)       | character(2) | s character(\*)                             | Returns the Unicode General category.                                                                        |
-  | utf8f_easta_property(s) | character(2) | s character(\*)                             | Returns the Unicode East Asian Width property.                                                               |
+  | Function                | Retrun value | Arguments                                     | Description                                                                                                  |
+  | ----------------------- | ------------ | --------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+  | utf8f_len(s)            | integer      | s (character(\*))                             | Returns the number of characters in a string. (Unlike the built-in LEN, this is not byte-length.)            |
+  | utf8f_codepoint(s)      | integer      | s (character(\*))                             | Returns the Unicode code point of the first character in string s.                                           |
+  | utf8f_width(s, is_CJK)  | integer      | s (character(\*)), is_CJK (logical, optional) | Returns the character width displayed in the console. (Based on East Asian Width in Unicode Standard Annex.) |
+  | utf8f_category(s)       | character(2) | s (character(\*))                             | Returns the Unicode General category.                                                                        |
+  | utf8f_easta_property(s) | character(2) | s (character(\*))                             | Returns the Unicode East Asian Width property.                                                               |
 
   The data contained in this database is compiled from the [UCD version 15.1.0](https://www.unicode.org/Public/15.1.0/ucd/).
 
