@@ -67,7 +67,7 @@ utf8f provides a set of functions useful for handling utf-8 strings in fortran.
       implicit none
         print*, utf8f_len("abcde") ! = 5
         print*, utf8f_len("あいうえお") ! = 5
-        print*, utf8f_codepoint("あ") ! = 2
+        print*, utf8f_codepoint("あ") ! = 12354 (0x3042)
         print*, utf8f_width("漢") ! = 2
       end program main
    ```
