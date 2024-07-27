@@ -1,6 +1,4 @@
 [![CI](https://github.com/yymmt742/utf8f/actions/workflows/ci.yml/badge.svg)](https://github.com/yymmt742/utf8f/actions/workflows/ci.yml)
-[![cmake][cmake]][cmake-url]
-[![fortran][fortran-shield]][fortran-url]
 
 <!-- PROJECT LOGO -->
 <br />
@@ -67,13 +65,26 @@ utf8f provides a set of functions useful for handling utf-8 strings in fortran.
       program main
       use mod_utf8f
       implicit none
-        block
         print*, utf8f_len("abcde") ! = 5
         print*, utf8f_len("あいうえお") ! = 5
-        print*, utf8f_codepoint("あ") ! = 2
+        print*, utf8f_codepoint("あ") ! = 12354 (0x3042)
         print*, utf8f_width("漢") ! = 2
       end program main
    ```
+
+   The following functions are available.
+
+  | Function                | Retrun value | Arguments                                     | Description                                                                                                  |
+  | ----------------------- | ------------ | --------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+  | utf8f_len(s)            | integer      | s (character(\*))                             | Returns the number of characters in a string. (Unlike the built-in LEN, this is not byte-length.)            |
+  | utf8f_codepoint(s)      | integer      | s (character(\*))                             | Returns the Unicode code point of the first character in string s.                                           |
+  | utf8f_width(s, is_CJK)  | integer      | s (character(\*)), is_CJK (logical, optional) | Returns the character width displayed in the console. (Based on East Asian Width in Unicode Standard Annex.) |
+  | utf8f_category(s)       | character(2) | s (character(\*))                             | Returns the Unicode General category.                                                                        |
+  | utf8f_easta_property(s) | character(2) | s (character(\*))                             | Returns the Unicode East Asian Width property.                                                               |
+
+  The data contained in this database is compiled from the [UCD version 15.1.0](https://www.unicode.org/Public/15.1.0/ucd/).
+
+  For details, see the [Unicode Character Database](https://www.unicode.org/ucd/).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -90,10 +101,4 @@ Distributed under the MIT License. See `LICENSE` for more information.
 YYMMT742 - yymmt@kuchem.kyoto-u.ac.jp
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- MARKDOWN LINKS & IMAGES -->
-[cmake]: https://img.shields.io/badge/Cmake-064F8C?style=for-the-badge&logo=cmake&logoColor=EEEEEE
-[cmake-url]: https://cmake.org/
-[fortran-shield]: https://img.shields.io/badge/Fortran-734F96?style=for-the-badge&logo=fortran&logoColor=FFFFFF
-[fortran-url]: https://fortran-lang.org/
 

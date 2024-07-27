@@ -22,6 +22,7 @@
     integer, intent(inout)   :: res
     include "width_table.h"
     integer                  :: ind
+    if (codepoint > N_TABLE) return
     call binary_search(codepoint, 1, N_TABLE, N_TABLE, &
    &                   INDEX_TABLE, ind)
     res = table(ind)
@@ -32,6 +33,7 @@
     integer, intent(inout)   :: res
     include "width_CJK_table.h"
     integer                  :: ind
+    if (codepoint > INDEX_TABLE(N_TABLE)) return
     call binary_search(codepoint, 1, N_TABLE, N_TABLE, &
    &                   INDEX_TABLE, ind)
     res = table(ind)
