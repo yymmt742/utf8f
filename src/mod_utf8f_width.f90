@@ -8,9 +8,9 @@
     if (c < 1) return
     if (PRESENT(is_CJK)) then
       if (is_CJK) then
-        call get_utf8f_width(c, res)
-      else
         call get_utf8f_width_CJK(c, res)
+      else
+        call get_utf8f_width(c, res)
       end if
     else
       call get_utf8f_width_CJK(c, res)
